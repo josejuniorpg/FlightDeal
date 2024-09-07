@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import {AppDataSource} from "./config/database";
+import "reflect-metadata"
 
 //Load environment variables
 dotenv.config();
@@ -16,7 +17,7 @@ app.get('/', (_, res) => {
 AppDataSource.initialize()
     .then(() => {
         console.log('Data Source has been initialized!');
-        // Configure  middlewares, rtes , etc.
+        // Configure  middlewares, routes , etc.
     })
     .catch((error: unknown) => {
         console.error('Error during Data Source initialization:', error);
