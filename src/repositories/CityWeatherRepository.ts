@@ -28,10 +28,8 @@ export class CityWeatherRepository {
             });
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error('Error querying CityWeather by lat and lon:', error.message);
                 throw new Error(`Failed to query CityWeather by lat and lon: ${error.message}`);
             } else {
-                console.error('An unknown error occurred while querying CityWeather by lat and lon');
                 throw new Error('Failed to query CityWeather by lat and lon: An unknown error occurred');
             }
         }
@@ -60,5 +58,9 @@ export class CityWeatherRepository {
                 throw new Error('Failed to save CityWeather: An unknown error occurred');
             }
         }
+    }
+
+    public async findByLocation(lat: number | undefined, lon: number | undefined): Promise<CityWeather | null> {
+        return this.repository.findOne({where: {lat, lon}});
     }
 }

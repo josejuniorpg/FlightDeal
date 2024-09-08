@@ -22,10 +22,8 @@ export class CityWeatherService {
             return await this.cityWeatherRepository.getCityWeatherOverviewByLatLon(lat, lon);
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error('Error fetching CityWeather by lat and lon:', error.message);
                 throw new Error(`Failed to fetch CityWeather by lat and lon: ${error.message}`);
             } else {
-                console.error('An unknown error occurred while fetching CityWeather by lat and lon');
                 throw new Error('Failed to fetch CityWeather by lat and lon: An unknown error occurred');
             }
         }
@@ -39,4 +37,25 @@ export class CityWeatherService {
         const weatherData = await WeatherService.getWeatherData<WeatherOverviewResponse>('/overview', data.lat, data.lon);
         return this.cityWeatherRepository.createCityWeatherOverview(weatherData);
     }
+
+
+    public async searchOrCreateCityWeatherOverview(data: Partial<CityWeather>): Promise<CityWeather> {
+
+        let cityWeather = await this.cityWeatherRepository.findByLocation(data.lat, data.lon);
+
+        if (!cityWeather) {
+            if (data.lat !== undefined && data.lon !== undefined) {
+                const weatherData = await WeatherService.getWeatherData<WeatherOverviewResponse>('/overview', data.lat, data.lon);
+                return this.cityWeatherRepository.createCityWeatherOverview({
+                    ...weatherData,
+                    lat: data.lat,
+                    lon: data.lon
+                });
+            } else {
+                throw new Error('Latitude and longitude are required');
+            }
+        }
+        return cityWeather;
+    }
+
 }

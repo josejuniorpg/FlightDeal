@@ -13,5 +13,5 @@ router.get('/', cityWeatherController.getAllCityWeatherOverview.bind(cityWeather
 router.get('/get-by-id/:id', cityWeatherController.getCityWeatherOverviewById.bind(cityWeatherController));
 router.post('/create', cityWeatherController.createCityWeatherOverview.bind(cityWeatherController));
 router.get('/get-by-latlon', cityWeatherController.getCityWeatherOverviewByLatLon.bind(cityWeatherController));
-
+router.post('/search-or-create-by-latlon', cityWeatherController.searchOrCreateCityWeatherOverview.bind(cityWeatherController));
 export default router;

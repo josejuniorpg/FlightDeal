@@ -56,4 +56,18 @@ export class CityWeatherController {
 
         }
     }
+
+    public async searchOrCreateCityWeatherOverview(req: Request, res: Response): Promise<void> {
+        try {
+            const cityWeather = await this.cityWeatherService.searchOrCreateCityWeatherOverview(req.body);
+            res.status(200).json(cityWeather);
+        } catch (error) {
+            res.status(500).json({
+                message: 'Error searching or creating city weather',
+                error
+            });
+
+        }
+    }
+
 }
