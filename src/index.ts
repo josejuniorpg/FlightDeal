@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import {AppDataSource} from "./config/database";
 import "reflect-metadata"
 import flightRoutes from "./routes/flightRoutes";
+import weatherRoutes from "./routes/weatherRoutes";
 
 //Load environment variables
 dotenv.config();
@@ -21,6 +22,8 @@ AppDataSource.initialize()
 
         //Routes.
         app.use('/api/flights', flightRoutes);
+        app.use('/api/weather', weatherRoutes);
+
 
         //Initialize server.
         const PORT = process.env.PORT || 3000;
