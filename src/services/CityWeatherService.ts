@@ -1,9 +1,11 @@
 import {CityWeather} from "../entity/CityWeather";
 import {CityWeatherRepository} from "../repositories/CityWeatherRepository";
 import {WeatherOverviewResponse, WeatherService} from "./WeatherApiService";
+import {Service} from "typedi";
 
+@Service()
 export class CityWeatherService {
-    constructor(private cityWeatherRepository: CityWeatherRepository) {}
+    constructor(private readonly cityWeatherRepository: CityWeatherRepository) {}
 
     public async getAllCityWeatherOverview(): Promise<CityWeather[]> {
         return this.cityWeatherRepository.getAllCityWeatherOverview();

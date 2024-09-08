@@ -28,6 +28,15 @@ export class FlightController {
         }
     }
 
+    public async getAllFlightsWithWeather(_: Request, res: Response): Promise<void> {
+        try {
+            const flights = await this.flightService.getAllFlightsWithWeather();
+            res.json(flights);
+        } catch (error) {
+            res.status(500).json({ message: 'Error retrieving flights', error });
+        }
+    }
+
     public async createFlight(req: Request, res: Response): Promise<void> {
         try {
             const newFlight = await this.flightService.createFlight(req.body);

@@ -5,11 +5,23 @@ import "reflect-metadata"
 import flightRoutes from "./routes/flightRoutes";
 import weatherRoutes from "./routes/weatherRoutes";
 import cityWeatherRoutes from "./routes/cityWeatherRoutes";
+ import {FlightRepository} from "./repositories/FlightRepository";
+import {CityWeatherRepository} from "./repositories/CityWeatherRepository";
+import {FlightService} from "./services/FlightService";
+import {CityWeatherService} from "./services/CityWeatherService";
+import {Container} from "typedi";
 
 //Load environment variables
 dotenv.config();
 
 const app = express();
+
+//Dependency Injection
+Container.set(FlightRepository, new FlightRepository());
+Container.set(CityWeatherRepository, new CityWeatherRepository());
+
+Container.get(FlightService);
+Container.get(CityWeatherService);
 
 //Global Middlewares
 app.use(express.json());

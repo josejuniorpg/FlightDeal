@@ -1,8 +1,15 @@
-import { FlightRepository } from '../repositories/FlightRepository';
+import {FlightRepository} from '../repositories/FlightRepository';
 import {Flight} from "../entity/Flight";
+import {CityWeatherService} from "./CityWeatherService";
+import {Service} from "typedi";
 
+@Service()
 export class FlightService {
-    constructor(private flightRepository: FlightRepository) {}
+    constructor(
+        private readonly flightRepository: FlightRepository,
+        private readonly cityWeatherService: CityWeatherService
+    ) {}
+
 
     public async getAllFlights(): Promise<Flight[]> {
         return this.flightRepository.getAllFlights();
@@ -11,6 +18,31 @@ export class FlightService {
     public async getFlightById(id: string): Promise<Flight | null> {
         const flightId = parseInt(id, 10);
         return this.flightRepository.getFlightById(flightId);
+    }
+
+    public async getAllFlightsWithWeather(): Promise<any[]> {
+        // Get all Flights
+        const flights = await this.flightRepository.getAllFlights();
+        console.log(flights);
+
+        //Process each flight to obtain or create the CityWeather
+        return await Promise.all(flights.map(async (flight) => {
+            const originCityWeather = await this.cityWeatherService.searchOrCreateCityWeatherOverview({
+                lat: flight.origin_latitude,
+                lon: flight.origin_longitude,
+            });
+
+            const destinationCityWeather = await this.cityWeatherService.searchOrCreateCityWeatherOverview({
+                lat: flight.origin_latitude,
+                lon: flight.origin_longitude,
+            });
+
+            return {
+                ...flight,
+                originCityWeather,
+                destinationCityWeather
+            };
+        }));
     }
 
     public async createFlight(data: Partial<Flight>): Promise<Flight> {
