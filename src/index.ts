@@ -5,6 +5,7 @@ import "reflect-metadata"
 import flightRoutes from "./routes/flightRoutes";
 import weatherRoutes from "./routes/weatherRoutes";
 import cityWeatherRoutes from "./routes/cityWeatherRoutes";
+import xlsxRoutes from './routes/xlsxRoutes'; // Importa el archivo de rutas
  import {FlightRepository} from "./repositories/FlightRepository";
 import {CityWeatherRepository} from "./repositories/CityWeatherRepository";
 import {FlightService} from "./services/FlightService";
@@ -37,6 +38,8 @@ AppDataSource.initialize()
         app.use('/api/flights', flightRoutes);
         app.use('/api/weather', weatherRoutes);
         app.use('/api/city-weather', cityWeatherRoutes);
+        app.use('/api/xlxs', xlsxRoutes);
+
 
 
         //Initialize server.
