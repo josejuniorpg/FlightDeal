@@ -10,6 +10,7 @@ const flightService = new FlightService(flightRepository);
 const flightController = new FlightController(flightService);
 
 router.get('/', flightController.getAllFlights.bind(flightController));
+router.get('/:id', flightController.getFlightById.bind(flightController));
 router.post('/create', flightController.createFlight.bind(flightController));
 
 export default router;

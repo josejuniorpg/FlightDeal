@@ -8,6 +8,11 @@ export class FlightService {
         return this.flightRepository.getAllFlights();
     }
 
+    public async getFlightById(id: string): Promise<Flight | null> {
+        const flightId = parseInt(id, 10);
+        return this.flightRepository.getFlightById(flightId);
+    }
+
     public async createFlight(data: Partial<Flight>): Promise<Flight> {
         if (!data.origin || !data.destination) {
             throw new Error('Flight must have an origin and a destination');
