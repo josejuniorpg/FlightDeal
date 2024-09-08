@@ -44,8 +44,8 @@ export class FlightService {
                 destinationCityWeatherId: destinationCityWeather.id
             };
 
-            // Update the flight in the repository
-            await this.flightRepository.updateFlight(flight.id, updatedFlight);
+            //Update the Flight
+            await this.updateFlight(flight.id, updatedFlight);
 
             return {
                 ...flight,
@@ -53,6 +53,10 @@ export class FlightService {
                 destinationCityWeather
             };
         }));
+    }
+
+    public async updateFlight(id: number, data: Partial<Flight>): Promise<Flight | null> {
+        return await this.flightRepository.updateFlight(id, data);
     }
 
     public async createFlight(data: Partial<Flight>): Promise<Flight> {

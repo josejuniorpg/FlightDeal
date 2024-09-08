@@ -37,6 +37,19 @@ export class FlightController {
         }
     }
 
+    public async updateFlight(req: Request, res: Response): Promise<void> {
+        try {
+            const updatedFlight = await this.flightService.updateFlight(parseInt(req.params.id, 10), req.body);
+            if (updatedFlight) {
+                res.json(updatedFlight);
+            } else {
+                res.status(404).json({ message: 'Flight not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ message: 'Error updating flight', error });
+        }
+    }
+
     public async createFlight(req: Request, res: Response): Promise<void> {
         try {
             const newFlight = await this.flightService.createFlight(req.body);

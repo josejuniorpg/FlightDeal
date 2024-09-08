@@ -14,6 +14,7 @@ const flightService = new FlightService(flightRepository, cityWeatherService);
 const flightController = new FlightController(flightService);
 
 router.get('/', flightController.getAllFlights.bind(flightController));
+router.put('/update/:id', flightController.updateFlight.bind(flightController));
 router.get('/get-by-id/:id', flightController.getFlightById.bind(flightController));
 router.get('/with-weather', flightController.getAllFlightsWithWeather.bind(flightController));
 router.post('/create', flightController.createFlight.bind(flightController));
