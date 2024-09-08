@@ -9,4 +9,5 @@ export const AppDataSource = new DataSource({
     logging: false,
     entities: [Flight, CityWeather],
     migrations: ['src/migrations/*.ts'],
+    migrationsTableName: 'migrations',
 });

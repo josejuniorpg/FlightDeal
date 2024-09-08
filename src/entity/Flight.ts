@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from 'typeorm';
+import {CityWeather} from "./CityWeather";
 
 @Entity()
 export class Flight {
@@ -40,4 +41,18 @@ export class Flight {
 
     @Column('decimal', {precision: 10, scale: 7})
     destination_longitude: number;
+
+    // Relation with CityWeather for origin
+    @ManyToOne(() => CityWeather, { nullable: true })
+    originCityWeather: CityWeather;
+
+    @Column({ nullable: true })
+    originCityWeatherId: number;
+
+    // Relation with CityWeather for destiny
+    @ManyToOne(() => CityWeather, { nullable: true })
+    destinationCityWeather: CityWeather;
+
+    @Column({ nullable: true })
+    destinationCityWeatherId: number;
 }
