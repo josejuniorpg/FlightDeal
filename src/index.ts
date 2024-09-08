@@ -4,6 +4,7 @@ import {AppDataSource} from "./config/database";
 import "reflect-metadata"
 import flightRoutes from "./routes/flightRoutes";
 import weatherRoutes from "./routes/weatherRoutes";
+import cityWeatherRoutes from "./routes/cityWeatherRoutes";
 
 //Load environment variables
 dotenv.config();
@@ -23,6 +24,7 @@ AppDataSource.initialize()
         //Routes.
         app.use('/api/flights', flightRoutes);
         app.use('/api/weather', weatherRoutes);
+        app.use('/api/city-weather', cityWeatherRoutes);
 
 
         //Initialize server.

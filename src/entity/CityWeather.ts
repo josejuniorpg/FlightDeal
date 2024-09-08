@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryGeneratedColumn} from "typeorm"
-
+//Todo improve types, and add City.
 @Entity('city_weather')
 export class CityWeather {
     @PrimaryGeneratedColumn()

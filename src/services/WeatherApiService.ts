@@ -1,6 +1,6 @@
 import {weatherApi} from "./apiClient";
 
-interface WeatherOverviewResponse {
+export interface WeatherOverviewResponse {
     id: number
     lat: number;
     lon: number;
