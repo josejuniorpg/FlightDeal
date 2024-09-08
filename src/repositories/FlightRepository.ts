@@ -18,4 +18,14 @@ export class FlightRepository {
         const flight = this.repository.create(data);
         return this.repository.save(flight);
     }
+
+    public async updateFlight(id: number, data: Partial<Flight>): Promise<Flight | null> {
+        const flight = await this.repository.findOneBy({ id });
+
+        if (!flight) {
+            return null;
+        }
+        const updatedFlight = this.repository.merge(flight, data);
+        return this.repository.save(updatedFlight);
+    }
 }

@@ -37,6 +37,16 @@ export class FlightService {
                 lon: flight.origin_longitude,
             });
 
+            // Update flight with city weather IDs
+            const updatedFlight = {
+                ...flight,
+                originCityWeatherId: originCityWeather.id,
+                destinationCityWeatherId: destinationCityWeather.id
+            };
+
+            // Update the flight in the repository
+            await this.flightRepository.updateFlight(flight.id, updatedFlight);
+
             return {
                 ...flight,
                 originCityWeather,
