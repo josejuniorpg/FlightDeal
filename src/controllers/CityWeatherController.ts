@@ -19,17 +19,30 @@ export class CityWeatherController {
 
     public async getCityWeatherOverviewById(req: Request, res: Response): Promise<void> {
         try {
-            const flight = await this.cityWeatherService.getCityWeatherOverviewById(req.params.id);
-            if (flight) {
-                res.json(flight);
+            const cityWeather = await this.cityWeatherService.getCityWeatherOverviewById(req.params.id);
+            if (cityWeather) {
+                res.json(cityWeather);
             } else {
-                res.status(404).json({message: 'Flight not found'});
+                res.status(404).json({message: 'City Weather not found'});
             }
         } catch (error) {
-            res.status(500).json({message: 'Error retrieving flight', error});
+            res.status(500).json({message: 'Error retrieving City Weather', error});
         }
     }
 
+    public async getCityWeatherOverviewByLatLon(req: Request, res: Response): Promise<void> {
+        const { lat, lon } = req.query;
+        try {
+            const cityWeatherData = await this.cityWeatherService.getCityWeatherByLatLon(Number(lat), Number(lon));
+            res.status(201).json(cityWeatherData);
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(500).json({ message: 'Error retrieving or saving CityWeather data', error: error.message });
+            } else {
+                res.status(500).json({ message: 'An unknown error occurred while retrieving or saving CityWeather data' });
+            }
+        }
+    }
     //Todo add by add and by lat and long
     public async createCityWeatherOverview(req: Request, res: Response): Promise<void> {
         try {

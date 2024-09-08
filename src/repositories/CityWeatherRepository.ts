@@ -18,6 +18,25 @@ export class CityWeatherRepository {
         }
     }
 
+    public async getCityWeatherOverviewByLatLon(lat: number, lon: number): Promise<CityWeather | null> {
+        try {
+            return await this.repository.findOne({
+                where: {
+                    lat: lat,
+                    lon: lon
+                }
+            });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error('Error querying CityWeather by lat and lon:', error.message);
+                throw new Error(`Failed to query CityWeather by lat and lon: ${error.message}`);
+            } else {
+                console.error('An unknown error occurred while querying CityWeather by lat and lon');
+                throw new Error('Failed to query CityWeather by lat and lon: An unknown error occurred');
+            }
+        }
+    }
+
     public async getCityWeatherOverviewById(id: number): Promise<CityWeather | null> {
         try {
             return await this.repository.findOneBy({ id });
