@@ -1,13 +1,13 @@
 import {Request, Response} from 'express';
-import {FlightRepository} from '../repositories/FlightRepository';
+import {FlightService} from "../services/FlightService";
 
-const flightRepository = new FlightRepository();
 
 export class FlightController {
+    constructor(private flightService: FlightService) {}
 
     public async getAllFlights(_: Request, res: Response): Promise<void> {
         try {
-            const flights = await flightRepository.getAllFlights();
+            const flights = await this.flightService.getAllFlights();
             res.json(flights);
         } catch (error) {
             res.status(500).json({message: 'Error retrieving flights', error});
@@ -16,7 +16,7 @@ export class FlightController {
 
     public async createFlight(req: Request, res: Response): Promise<void> {
         try {
-            const newFlight = await flightRepository.createFlight(req.body);
+            const newFlight = await this.flightService.createFlight(req.body);
             res.status(201).json(newFlight);
         } catch (error) {
             res.status(500).json({
