@@ -10,7 +10,7 @@ const cityWeatherService = new CityWeatherService(cityWeatherRepository);
 const cityWeatherController = new CityWeatherController(cityWeatherService);
 
 router.get('/', cityWeatherController.getAllCityWeatherOverview.bind(cityWeatherController));
-//router.get('/:id', flightController.getFlightById.bind(flightController));
+router.get('/:id', cityWeatherController.getCityWeatherOverviewById.bind(cityWeatherController));
 router.post('/create', cityWeatherController.createCityWeatherOverview.bind(cityWeatherController));
 
 export default router;

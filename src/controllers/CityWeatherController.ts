@@ -16,6 +16,21 @@ export class CityWeatherController {
             });
         }
     }
+
+    public async getCityWeatherOverviewById(req: Request, res: Response): Promise<void> {
+        try {
+            const flight = await this.cityWeatherService.getCityWeatherOverviewById(req.params.id);
+            if (flight) {
+                res.json(flight);
+            } else {
+                res.status(404).json({message: 'Flight not found'});
+            }
+        } catch (error) {
+            res.status(500).json({message: 'Error retrieving flight', error});
+        }
+    }
+
+    //Todo add by add and by lat and long
     public async createCityWeatherOverview(req: Request, res: Response): Promise<void> {
         try {
             const newCityWeather = await this.cityWeatherService.createCityWeatherOverview(req.body);

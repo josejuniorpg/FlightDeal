@@ -9,6 +9,10 @@ export class CityWeatherService {
         return this.cityWeatherRepository.getAllCityWeatherOverview();
     }
 
+    public async getCityWeatherOverviewById(id: string): Promise<CityWeather | null> {
+        const cityWeatherId = parseInt(id, 10);
+        return this.cityWeatherRepository.getCityWeatherOverviewById(cityWeatherId);
+    }
 
     public async createCityWeatherOverview(data: Partial<CityWeather>): Promise<CityWeather> {
         //todo Add mappers

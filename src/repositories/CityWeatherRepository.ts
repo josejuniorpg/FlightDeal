@@ -7,7 +7,27 @@ export class CityWeatherRepository {
     private repository: Repository<CityWeather> = AppDataSource.getRepository(CityWeather);
 
     public async getAllCityWeatherOverview(): Promise<CityWeather[]> {
-        return this.repository.find();
+        try {
+            return await this.repository.find();
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new Error(`Failed to fetch all CityWeather records: ${error.message}`);
+            } else {
+                throw new Error('Failed to fetch all CityWeather records: An unknown error occurred');
+            }
+        }
+    }
+
+    public async getCityWeatherOverviewById(id: number): Promise<CityWeather | null> {
+        try {
+            return await this.repository.findOneBy({ id });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new Error(`Failed to fetch CityWeather record with ID ${id}: ${error.message}`);
+            } else {
+                throw new Error(`Failed to fetch CityWeather record with ID ${id}: An unknown error occurred`);
+            }
+        }
     }
 
     public async createCityWeatherOverview(data: Partial<CityWeather>): Promise<CityWeather> {
