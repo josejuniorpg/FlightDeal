@@ -28,14 +28,14 @@ export class FlightRepository {
 
     public async getUniqueOriginCities(): Promise<{ lat: number, lon: number }[]> {
         return this.repository.createQueryBuilder("flight")
-            .select(["flight.origin_latitude as lat", "flight.origin_longitude as lon"])
+            .select(["flight.origin_latitude as lat", "flight.origin_longitude as lon", "flight.origin_iata_code as iata"])
             .groupBy("flight.origin_latitude, flight.origin_longitude")
             .getRawMany();
     }
 
     public async getUniqueDestinationCities(): Promise<{ lat: number, lon: number }[]> {
         return this.repository.createQueryBuilder("flight")
-            .select(["flight.destination_latitude as lat", "flight.destination_longitude as lon"])
+            .select(["flight.destination_latitude as lat", "flight.destination_longitude as lon", "flight.destination_iata_code as iata"])
             .groupBy("flight.destination_latitude, flight.destination_longitude")
             .getRawMany();
     }

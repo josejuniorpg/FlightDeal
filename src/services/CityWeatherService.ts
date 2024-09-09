@@ -51,7 +51,8 @@ export class CityWeatherService {
                 return this.cityWeatherRepository.createCityWeatherOverview({
                     ...weatherData,
                     lat: data.lat,
-                    lon: data.lon
+                    lon: data.lon,
+                    city_iata: data.city_iata || undefined,
                 });
             } else {
                 throw new Error('Latitude and longitude are required');

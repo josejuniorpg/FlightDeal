@@ -76,7 +76,7 @@ export class FlightService {
         const uniqueCities = Array.from(new Set(allCities.map(c => JSON.stringify(c))))
             .map(c => JSON.parse(c));
         const cityWeatherPromises = uniqueCities.map(async city => {
-            return this.cityWeatherService.searchOrCreateCityWeatherOverview({ lat: city.lat, lon: city.lon });
+            return this.cityWeatherService.searchOrCreateCityWeatherOverview({ lat: city.lat, lon: city.lon, city_iata: city.iata });
         });
         const cityWeathers = await Promise.all(cityWeatherPromises);
         return cityWeathers;
