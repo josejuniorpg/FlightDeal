@@ -22,6 +22,7 @@ router.get('/get-by-id/:id', flightController.getFlightById.bind(flightControlle
 router.get('/with-weather', flightController.getAllFlightsWithWeather.bind(flightController));
 router.get('/unique-cities', flightController.getUniqueCities.bind(flightController))
 router.post('/create', flightController.createFlight.bind(flightController));
+router.get('/excel/get-flight-weather', flightController.exportFlightsWithWeatherToExcel);
 router.post('/excel/upload', upload.single('file'), (req, res) => {
     flightController.uploadAndCreateFlights(req, res);
 });

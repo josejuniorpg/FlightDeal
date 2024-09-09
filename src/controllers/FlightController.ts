@@ -3,6 +3,8 @@ import {FlightService} from "../services/FlightService";
 import {XlsxService} from "../services/XlxsService";
 import {unlink} from "fs/promises";
 import {FlightMapper} from "../mappers/FlightMapper";
+import * as fs from "node:fs";
+import path from "node:path";
 
 
 export class FlightController {
@@ -65,6 +67,29 @@ export class FlightController {
 
         }
     }
+
+    public exportFlightsWithWeatherToExcel = async (_: Request, res: Response): Promise<void> => {
+        try {
+            const filePath = path.join(__dirname, '../..', 'exports', 'FlightsWithWeather.xlsx');
+
+            // Export data to Excel
+            await this.flightService.exportFlightsWithWeatherToExcel(filePath);
+
+            // Send file as a response
+            res.download(filePath, 'FlightsWithWeather.xlsx', (err) => {
+                if (err) {
+                    res.status(500).send('Error sending the file.');
+                } else {
+                    //Eliminate file after response
+                    fs.unlink(filePath, (unlinkErr) => {
+                        if (unlinkErr) console.error('Error deleting the file:', unlinkErr);
+                    });
+                }
+            });
+        } catch (error) {
+            res.status(500).send('Error during export data to excel.');
+        }
+    };
 
     public getUniqueCities = async (_: Request, res: Response): Promise<void> => {
         try {
