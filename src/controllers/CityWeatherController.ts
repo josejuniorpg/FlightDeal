@@ -43,7 +43,7 @@ export class CityWeatherController {
             }
         }
     }
-    //Todo add by add and by lat and long
+
     public async createCityWeatherOverview(req: Request, res: Response): Promise<void> {
         try {
             const newCityWeather = await this.cityWeatherService.createCityWeatherOverview(req.body);

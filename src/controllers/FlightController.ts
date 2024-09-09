@@ -33,15 +33,6 @@ export class FlightController {
         }
     }
 
-    public async getAllFlightsWithWeather(_: Request, res: Response): Promise<void> {
-        try {
-            const flights = await this.flightService.getAllFlightsWithWeather();
-            res.json(flights);
-        } catch (error) {
-            res.status(500).json({ message: 'Error retrieving flights', error });
-        }
-    }
-
     public async updateFlight(req: Request, res: Response): Promise<void> {
         try {
             const updatedFlight = await this.flightService.updateFlight(parseInt(req.params.id, 10), req.body);
@@ -68,6 +59,15 @@ export class FlightController {
         }
     }
 
+    public async getAllFlightsWithWeather(_: Request, res: Response): Promise<void> {
+        try {
+            const flights = await this.flightService.getAllFlightsWithWeather();
+            res.json(flights);
+        } catch (error) {
+            res.status(500).json({ message: 'Error retrieving flights', error });
+        }
+    }
+
     public exportFlightsWithWeatherToExcel = async (_: Request, res: Response): Promise<void> => {
         try {
             const filePath = path.join(__dirname, '../..', 'exports', 'FlightsWithWeather.xlsx');
@@ -91,15 +91,6 @@ export class FlightController {
         }
     };
 
-    public getUniqueCities = async (_: Request, res: Response): Promise<void> => {
-        try {
-            const uniqueCities = await this.flightService.getUniqueCities();
-            res.status(200).json(uniqueCities);
-        } catch (error) {
-            res.status(500).json({ error: 'Error in obtaining unique cities' });
-        }
-    };
-
     async uploadAndCreateFlights(req: Request, res: Response): Promise<Response> {
         try {
             const filePath = req.file?.path;
@@ -117,4 +108,14 @@ export class FlightController {
             return res.status(500).json({ error: 'An error occurred while processing the file' });
         }
     }
+
+    public getUniqueCities = async (_: Request, res: Response): Promise<void> => {
+        try {
+            const uniqueCities = await this.flightService.getUniqueCities();
+            res.status(200).json(uniqueCities);
+        } catch (error) {
+            res.status(500).json({ error: 'Error in obtaining unique cities' });
+        }
+    };
+
 }

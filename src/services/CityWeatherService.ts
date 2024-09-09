@@ -32,7 +32,6 @@ export class CityWeatherService {
     }
 
     public async createCityWeatherOverview(data: Partial<CityWeather>): Promise<CityWeather> {
-        //todo Add mappers
         if (!data.lat || !data.lon) {
            throw new Error('Latitude and Longitude are required');
        }
@@ -43,7 +42,7 @@ export class CityWeatherService {
 
     public async searchOrCreateCityWeatherOverview(data: Partial<CityWeather>): Promise<CityWeather> {
 
-        let cityWeather = await this.cityWeatherRepository.findByLocation(data.lat, data.lon);
+        let cityWeather = await this.cityWeatherRepository.getCityWeatherOverviewByLatLon(data.lat, data.lon);
 
         if (!cityWeather) {
             if (data.lat !== undefined && data.lon !== undefined) {

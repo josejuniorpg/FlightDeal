@@ -18,7 +18,7 @@ export class CityWeatherRepository {
         }
     }
 
-    public async getCityWeatherOverviewByLatLon(lat: number, lon: number): Promise<CityWeather | null> {
+    public async getCityWeatherOverviewByLatLon(lat: number | undefined, lon: number | undefined): Promise<CityWeather | null> {
         try {
             return await this.repository.findOne({
                 where: {
@@ -58,9 +58,5 @@ export class CityWeatherRepository {
                 throw new Error('Failed to save CityWeather: An unknown error occurred');
             }
         }
-    }
-
-    public async findByLocation(lat: number | undefined, lon: number | undefined): Promise<CityWeather | null> {
-        return this.repository.findOne({where: {lat, lon}});
     }
 }

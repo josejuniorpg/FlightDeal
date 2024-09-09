@@ -26,6 +26,16 @@ export class FlightRepository {
             .getMany();
     }
 
+    public async updateFlight(id: number, data: Partial<Flight>): Promise<Flight | null> {
+        const flight = await this.repository.findOneBy({ id });
+
+        if (!flight) {
+            return null;
+        }
+        const updatedFlight = this.repository.merge(flight, data);
+        return this.repository.save(updatedFlight);
+    }
+
     public async getUniqueOriginCities(): Promise<{ lat: number, lon: number }[]> {
         return this.repository.createQueryBuilder("flight")
             .select(["flight.origin_latitude as lat", "flight.origin_longitude as lon", "flight.origin_iata_code as iata"])
@@ -40,13 +50,4 @@ export class FlightRepository {
             .getRawMany();
     }
 
-    public async updateFlight(id: number, data: Partial<Flight>): Promise<Flight | null> {
-        const flight = await this.repository.findOneBy({ id });
-
-        if (!flight) {
-            return null;
-        }
-        const updatedFlight = this.repository.merge(flight, data);
-        return this.repository.save(updatedFlight);
-    }
 }
