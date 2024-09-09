@@ -1,9 +1,12 @@
 import {Request, Response} from 'express';
 import {FlightService} from "../services/FlightService";
+import {XlsxService} from "../services/XlxsService";
+import {unlink} from "fs/promises";
+import {FlightMapper} from "../mappers/FlightMapper";
 
 
 export class FlightController {
-    constructor(private flightService: FlightService) {
+    constructor(private flightService: FlightService, private xlsxService: XlsxService) {
     }
 
     public async getAllFlights(_: Request, res: Response): Promise<void> {
@@ -60,6 +63,33 @@ export class FlightController {
                 error
             });
 
+        }
+    }
+
+    public getUniqueCities = async (_: Request, res: Response): Promise<void> => {
+        try {
+            const uniqueCities = await this.flightService.getUniqueCities();
+            res.status(200).json(uniqueCities);
+        } catch (error) {
+            res.status(500).json({ error: 'Error in obtaining unique cities' });
+        }
+    };
+
+    async uploadAndCreateFlights(req: Request, res: Response): Promise<Response> {
+        try {
+            const filePath = req.file?.path;
+            if (!filePath) {
+                return res.status(400).json({ error: 'No file uploaded' });
+            }
+            // Read the Excel file
+            const excelData = await this.xlsxService.readExcelFile(filePath);
+            // Map the Excel data to Flight objects
+            const flightsData = FlightMapper.mapExcelDataToFlights(excelData);
+            const createdFlights = await this.flightService.createFlights(flightsData);
+            await unlink(filePath);
+            return res.json(createdFlights);
+        } catch (error) {
+            return res.status(500).json({ error: 'An error occurred while processing the file' });
         }
     }
 }
