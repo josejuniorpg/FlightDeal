@@ -36,12 +36,18 @@ export class FlightService {
         const flightsArrays = await Promise.all(flightsPromises);
         //Flatten the array of flight arrays
         const allFlights = flightsArrays.flat();
-        const flightsWithWeather = allFlights.map((flight: {
+
+        const flightsWithWeather = allFlights.map(async (flight: {
+            id: number;
             origin_latitude: number;
             origin_longitude: number;
             destination_latitude: number;
             destination_longitude: number;
+            originCityWeatherId?: number;
+            destinationCityWeatherId?: number;
         }) => {
+            let updated = false;
+
             // Find the weather for the origin, from CityWeather
             const originWeather = cityWeathers.find((cw: { lat: number; lon: number; }) =>
                 cw.lat === flight.origin_latitude && cw.lon === flight.origin_longitude
@@ -50,13 +56,31 @@ export class FlightService {
             const destinationWeather = cityWeathers.find((cw: { lat: number; lon: number; }) =>
                 cw.lat === flight.destination_latitude && cw.lon === flight.destination_longitude
             );
+
+            //Update only if  originCityWeatherId or destinationCityWeatherId don't exist
+            const updatedFlight: Partial<typeof flight> = { ...flight };
+
+            if (!flight.originCityWeatherId && originWeather) {
+                updatedFlight.originCityWeatherId = originWeather.id;
+                updated = true;
+            }
+
+            if (!flight.destinationCityWeatherId && destinationWeather) {
+                updatedFlight.destinationCityWeatherId = destinationWeather.id;
+                updated = true;
+            }
+
+            if (updated) {
+                await this.flightRepository.updateFlight(flight.id, updatedFlight);
+            }
+
             return {
                 ...flight,
                 originWeather,
                 destinationWeather
             };
         });
-        return flightsWithWeather;
+        return Promise.all(flightsWithWeather);
     }
 
 
