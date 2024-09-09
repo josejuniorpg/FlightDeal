@@ -11,6 +11,7 @@ import {CityWeatherRepository} from "./repositories/CityWeatherRepository";
 import {FlightService} from "./services/FlightService";
 import {CityWeatherService} from "./services/CityWeatherService";
 import {Container} from "typedi";
+import {setupSwagger} from "./swagger";
 
 
 var cors = require('cors')
@@ -36,6 +37,9 @@ Container.get(CityWeatherService);
 //Global Middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+//Swagger
+setupSwagger(app);
 
 // Initialize BD, and the server.
 AppDataSource.initialize()
