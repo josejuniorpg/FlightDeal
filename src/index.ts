@@ -12,10 +12,19 @@ import {FlightService} from "./services/FlightService";
 import {CityWeatherService} from "./services/CityWeatherService";
 import {Container} from "typedi";
 
+
+var cors = require('cors')
+
 //Load environment variables
 dotenv.config();
 
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 //Dependency Injection
 Container.set(FlightRepository, new FlightRepository());
@@ -27,7 +36,6 @@ Container.get(CityWeatherService);
 //Global Middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
 
 // Initialize BD, and the server.
 AppDataSource.initialize()
